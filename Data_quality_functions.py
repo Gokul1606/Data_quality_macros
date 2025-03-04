@@ -11,9 +11,8 @@ def missing_values(df):
 
 # Function to check for duplicates - UNIQUENESS
 def duplicates(df):
-    total_duplicates = df.duplicated().sum()
     duplicate_rows = df[df.duplicated()]
-    return total_duplicates, duplicate_rows
+    return duplicate_rows
 
 # Function to check for invalid amounts - CONSISTENCY
 def invalid_amounts(df, column):
@@ -93,3 +92,40 @@ def inconsistent_Currency_values(df):
         ~(df['Currency'] == 'CAD')
     ]
     return inconsistent_currency_values
+
+# Generating data issues on a dataframe
+def data_issue_report(df):
+    missing = missing_values(df)
+    duplicates_info = duplicates(df)
+    inconsistent_high = inconsistent_high_values(df)
+    inconsistent_low = inconsistent_low_values(df)
+    inconsistent_open = inconsistent_open_values(df)
+    inconsistent_close = inconsistent_close_values(df)
+    inconsistent_volume = inconsistent_Volume_values(df)
+    inconsistent_currency = inconsistent_Currency_values(df)
+    
+    duplicates_report = pd.DataFrame(duplicates_info)
+    inconsistent_high_report = pd.DataFrame(inconsistent_high)
+    inconsistent_low_report = pd.DataFrame(inconsistent_low)    
+    inconsistent_open_report = pd.DataFrame(inconsistent_open)
+    inconsistent_close_report = pd.DataFrame(inconsistent_close)
+    inconsistent_volume_report = pd.DataFrame(inconsistent_volume)
+    inconsistent_currency_report = pd.DataFrame(inconsistent_currency) 
+
+    return {
+        'Duplicate_Rows': duplicates_report,
+        'Inconsistent_High_Values': inconsistent_high_report,
+        'Inconsistent_Low_Values': inconsistent_low_report,
+        'Inconsistent_Open_Values': inconsistent_open_report,
+        'Inconsistent_Close_Values': inconsistent_close_report,
+        'Inconsistent_Volume_Values': inconsistent_volume_report,
+        'Inconsistent_Currency_Values': inconsistent_currency_report
+    }
+    
+# Generating data issue reports on csv files
+def data_issue_report_csv(df):
+    reports = data_issue_report(df)
+    for key, value in reports.items():
+        value.to_csv(f'{key}.csv')
+        print(f'{key}.csv has been saved')
+
