@@ -14,14 +14,6 @@ def duplicates(df):
     duplicate_rows = df[df.duplicated()]
     return duplicate_rows
 
-# Function to check for invalid amounts - CONSISTENCY
-def invalid_amounts(df, column):
-    invalid_amounts = df[df[column] < 0]
-    if len(invalid_amounts) == 0:
-        return 'No invalid amounts found'
-    else:
-        return invalid_amounts
-
 # Funtion to check invalid dates - CONSISTENCY
 def invalid_dates(df):
     invalid_dates = []
