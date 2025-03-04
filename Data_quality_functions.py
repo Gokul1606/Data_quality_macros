@@ -73,15 +73,23 @@ def inconsistent_close_values(df):
     return inconsistent_close_values
 
 # Finding inconsistent Volume values in stock data
-def inconsistent_volume_values(df):
-    df['Volume'] = df['Volume'].astype(integer)
+def inconsistent_Volume_values(df):
+    df['Volume'] = df['Volume'].fillna(0)
+    df['Volume'] = df['Volume'].astype('int')
     # Finding outliers through IQR method
     iqr = df['Volume'].quantile(0.75) - df['Volume'].quantile(0.25)
     Floor_value = df['Volume'].quantile(0.25) - 1.5 * iqr
     Ceiling_value = df['Volume'].quantile(0.75) + 1.5 * iqr
     
-    inconsistent_volume_values = df[
+    inconsistent_Volume_values = df[
         (df['Volume'] > Ceiling_value) |
         (df['Volume'] < Floor_value)
     ]
-    return inconsistent_volume_values
+    return inconsistent_Volume_values
+
+# Finding inconsistent currency values in stock data
+def inconsistent_Currency_values(df):
+    inconsistent_currency_values = df[
+        ~(df['Currency'] == 'CAD')
+    ]
+    return inconsistent_currency_values
